@@ -1,3 +1,4 @@
+use actix_files as fs;
 use actix_cors::Cors;
 use actix_web::{get, post, web, App, HttpResponse, HttpServer, Responder, Result};
 use serde::Serialize;
@@ -54,7 +55,7 @@ async fn main() -> std::io::Result<()> {
             .app_data(web::Data::new(AppState {
                 app_name: String::from("Actix Web"),
             }))
-            .service(index)
+            .service(fs::Files::new("/", "./static").index_file("index.html"))
             .service(name)
             .service(echo)
             .route("/hey", web::get().to(manual_hello))
